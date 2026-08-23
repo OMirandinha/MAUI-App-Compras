@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiAppMinhasCompras.Views.ListaProduto"
+    Title="Minhas Compras">
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem
+            Text="Somar"
+            Clicked="ToolbarItem_Somar" />
+
+        <ToolbarItem
+            Text="Adicionar"
+            Clicked="ToolbarItem_Clicked" />
+
+    </ContentPage.ToolbarItems>
+
+    <Grid
+        Padding="15"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="15">
+
+        <!-- Título -->
+        <VerticalStackLayout Grid.Row="0">
+
+            <Label
+                Text="Produtos cadastrados"
+                FontSize="14"
+                TextColor="Gray" />
+
+        </VerticalStackLayout>
+
+        <!-- Resumo -->
+        <Border
+            Grid.Row="1"
+            Padding="15"
+            StrokeThickness="0"
+            BackgroundColor="Transparent">
+
+            <VerticalStackLayout>
+
+                <Label
+            Text="Produtos cadastrados"
+            FontSize="13"
+            TextColor="Gray" />
+
+                <Label
+            x:Name="lblQuantidadeProdutos"
+            Text="0"
+            FontSize="22"
+            FontAttributes="Bold" />
+
+            </VerticalStackLayout>
+
+        </Border>
+
+        <!-- Lista -->
+        <CollectionView
+            Grid.Row="2"
+            x:Name="collectionViewProdutos"
+            SelectionMode="None">
+
+            <CollectionView.EmptyView>
+
+                <VerticalStackLayout
+                    Padding="30"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="Nenhum produto cadastrado."
+                        FontSize="18"
+                        HorizontalTextAlignment="Center" />
+
+                    <Label
+                        Text="Toque em Adicionar para cadastrar seu primeiro produto."
+                        FontSize="13"
+                        TextColor="Gray"
+                        HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
+
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <Border
+                        Margin="0,5"
+                        Padding="15"
+                        Stroke="#DDDDDD"
+                        StrokeThickness="1">
+
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            RowDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="10">
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="{Binding Descricao}"
+                                FontSize="18"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Text="{Binding Quantidade, StringFormat='Quantidade: {0:F2}'}"
+                                FontSize="14"
+                                TextColor="Gray" />
+
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Text="{Binding Preco, StringFormat='Preço unitário: R$ {0:F2}'}"
+                                FontSize="14"
+                                TextColor="Gray" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="1"
+                                Text="⋮"
+                                FontSize="28"
+                                VerticalOptions="Center" />
+
+                            <Grid.GestureRecognizers>
+
+                                <TapGestureRecognizer
+                                    Tapped="Produto_Tapped" />
+
+                            </Grid.GestureRecognizers>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>
