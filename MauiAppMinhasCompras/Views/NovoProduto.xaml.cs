@@ -9,13 +9,23 @@ public partial class NovoProduto : ContentPage
         InitializeComponent();
     }
 
+
+    // =========================================================
+    // SALVAR PRODUTO
+    // =========================================================
+
     private async void ToolbarItem_Clicked(
         object sender,
         EventArgs e)
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(txt_descricao.Text))
+            // =================================================
+            // VALIDAÇÃO DA DESCRIÇÃO
+            // =================================================
+
+            if (string.IsNullOrWhiteSpace(
+                txt_descricao.Text))
             {
                 await DisplayAlert(
                     "Atenção",
@@ -24,6 +34,11 @@ public partial class NovoProduto : ContentPage
 
                 return;
             }
+
+
+            // =================================================
+            // VALIDAÇÃO DA QUANTIDADE
+            // =================================================
 
             if (!double.TryParse(
                     txt_quantidade.Text,
@@ -37,6 +52,11 @@ public partial class NovoProduto : ContentPage
                 return;
             }
 
+
+            // =================================================
+            // VALIDAÇÃO DO PREÇO
+            // =================================================
+
             if (!double.TryParse(
                     txt_preco.Text,
                     out double preco))
@@ -49,6 +69,11 @@ public partial class NovoProduto : ContentPage
                 return;
             }
 
+
+            // =================================================
+            // VALIDAÇÃO DA QUANTIDADE
+            // =================================================
+
             if (quantidade <= 0)
             {
                 await DisplayAlert(
@@ -58,6 +83,11 @@ public partial class NovoProduto : ContentPage
 
                 return;
             }
+
+
+            // =================================================
+            // VALIDAÇÃO DO PREÇO
+            // =================================================
 
             if (preco < 0)
             {
@@ -69,6 +99,11 @@ public partial class NovoProduto : ContentPage
                 return;
             }
 
+
+            // =================================================
+            // CRIAÇÃO DO OBJETO PRODUTO
+            // =================================================
+
             Produto p = new Produto
             {
                 Descricao = txt_descricao.Text.Trim(),
@@ -76,12 +111,28 @@ public partial class NovoProduto : ContentPage
                 Preco = preco
             };
 
+
+            // =================================================
+            // INSERÇÃO NO SQLITE
+            // =================================================
+
             await App.Db.Insert(p);
 
+
+            // Mensagem de confirmação.
             await DisplayAlert(
                 "Sucesso!",
                 "Registro inserido com sucesso.",
                 "OK");
+
+
+            // =================================================
+            // ALTERAÇÃO:
+            // Volta para a tela principal.
+            //
+            // Ao voltar, o OnAppearing() da ListaProduto
+            // será executado e a nova lista será carregada.
+            // =================================================
 
             await Navigation.PopAsync();
         }

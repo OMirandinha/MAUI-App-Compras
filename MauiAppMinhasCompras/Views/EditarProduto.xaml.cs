@@ -4,20 +4,38 @@ namespace MauiAppMinhasCompras.Views;
 
 public partial class EditarProduto : ContentPage
 {
+    // Produto que está sendo editado.
     private Produto _produto;
+
 
     public EditarProduto(Produto produto)
     {
         InitializeComponent();
 
+        // Recebe o produto selecionado na lista.
         _produto = produto;
 
-        lbl_codigo.Text = $"Código: {_produto.Id}";
 
-        txt_descricao.Text = _produto.Descricao;
-        txt_quantidade.Text = _produto.Quantidade.ToString();
-        txt_preco.Text = _produto.Preco.ToString();
+        // Mostra o código do produto.
+        lbl_codigo.Text =
+            $"Código: {_produto.Id}";
+
+
+        // Preenche os campos com os dados atuais.
+        txt_descricao.Text =
+            _produto.Descricao;
+
+        txt_quantidade.Text =
+            _produto.Quantidade.ToString();
+
+        txt_preco.Text =
+            _produto.Preco.ToString();
     }
+
+
+    // =========================================================
+    // SALVAR ALTERAÇÕES
+    // =========================================================
 
     private async void ToolbarItem_Clicked(
         object sender,
@@ -25,7 +43,9 @@ public partial class EditarProduto : ContentPage
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(txt_descricao.Text))
+            // Validação da descrição.
+            if (string.IsNullOrWhiteSpace(
+                txt_descricao.Text))
             {
                 await DisplayAlert(
                     "Atenção",
@@ -35,6 +55,8 @@ public partial class EditarProduto : ContentPage
                 return;
             }
 
+
+            // Validação da quantidade.
             if (!double.TryParse(
                     txt_quantidade.Text,
                     out double quantidade))
@@ -47,6 +69,8 @@ public partial class EditarProduto : ContentPage
                 return;
             }
 
+
+            // Validação do preço.
             if (!double.TryParse(
                     txt_preco.Text,
                     out double preco))
@@ -59,17 +83,33 @@ public partial class EditarProduto : ContentPage
                 return;
             }
 
-            _produto.Descricao = txt_descricao.Text.Trim();
-            _produto.Quantidade = quantidade;
-            _produto.Preco = preco;
+
+            // Atualiza os dados do objeto.
+            _produto.Descricao =
+                txt_descricao.Text.Trim();
+
+            _produto.Quantidade =
+                quantidade;
+
+            _produto.Preco =
+                preco;
+
+
+            // =================================================
+            // ALTERAÇÃO:
+            // Atualiza o registro no SQLite.
+            // =================================================
 
             await App.Db.Update(_produto);
+
 
             await DisplayAlert(
                 "Sucesso!",
                 "Produto atualizado com sucesso.",
                 "OK");
 
+
+            // Volta para a lista.
             await Navigation.PopAsync();
         }
         catch (Exception ex)
